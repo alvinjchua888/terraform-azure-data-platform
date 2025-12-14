@@ -1,0 +1,25 @@
+# Example terraform.tfvars file
+# Copy this to terraform.tfvars and customize the values
+# cp terraform.tfvars.example terraform.tfvars
+
+# Resource Group Configuration
+# resource_group_name = "rg-data-analytics-prod"
+# location            = "East US"
+# prefix              = "dap"  # Keep it short (3-6 chars) for resource naming
+
+# Databricks Configuration
+# databricks_sku = "premium"  # Options: standard, premium, trial
+
+# Synapse SQL Configuration
+# synapse_sql_admin_username = "sqladmin"
+# synapse_sql_admin_password = "YourSecurePassword123!"  # Must meet complexity requirements
+# synapse_sql_pool_sku       = "DW100c"  # Options: DW100c, DW200c, DW300c, etc.
+
+# Tags
+# tags = {
+#   Environment  = "Production"
+#   ManagedBy    = "Terraform"
+#   Project      = "Data-Analytics-Platform"
+#   CostCenter   = "Analytics"
+#   Owner        = "Data-Team"
+# }

@@ -1,0 +1,64 @@
+{
+  "name": "IngestToDataLake",
+  "properties": {
+    "description": "Example pipeline to ingest data from source to Data Lake Landing container",
+    "activities": [
+      {
+        "name": "CopyDataToLanding",
+        "type": "Copy",
+        "policy": {
+          "timeout": "7.00:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30
+        },
+        "typeProperties": {
+          "source": {
+            "type": "BlobSource"
+          },
+          "sink": {
+            "type": "BlobSink",
+            "copyBehavior": "PreserveHierarchy"
+          },
+          "enableStaging": false
+        },
+        "inputs": [
+          {
+            "referenceName": "SourceDataset",
+            "type": "DatasetReference"
+          }
+        ],
+        "outputs": [
+          {
+            "referenceName": "LandingDataset",
+            "type": "DatasetReference"
+          }
+        ]
+      },
+      {
+        "name": "TriggerDatabricksNotebook",
+        "type": "DatabricksNotebook",
+        "dependsOn": [
+          {
+            "activity": "CopyDataToLanding",
+            "dependencyConditions": ["Succeeded"]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 2
+        },
+        "typeProperties": {
+          "notebookPath": "/notebooks/transform_landing_data",
+          "baseParameters": {
+            "input_path": "/mnt/landing",
+            "output_path": "/mnt/interim"
+          }
+        }
+      }
+    ],
+    "annotations": [],
+    "folder": {
+      "name": "DataIngestion"
+    }
+  }
+}
